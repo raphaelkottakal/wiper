@@ -40,9 +40,11 @@ export default class Wiper extends Component {
 		this.ctx = this.canvas.getContext('2d');
 		this.w = this.canvas.width;
 		this.h = this.canvas.height;
-		this.animationDone = true;
+		this.animationDone = false;
 		// console.log('updated');
-		this.ctx.drawImage(this.bgMist,0,0,this.w,this.h);
+		// this.ctx.drawImage(this.bgMist,0,0,this.w,this.h);
+
+		this.reRenderMist();
 	}
 
 	reRenderMist() {
