@@ -75,23 +75,34 @@ export default class Wiper extends Component {
 		clearTimeout(this.mistTimeout);
 		if (this.state.bothImagesLoaded && this.animationDone) {
 
-			const r = 20;
+			const r = 40;
 
-			for (var i = e.nativeEvent.touches.length - 1; i >= 0; i--) {
-				// e.nativeEvent.touches[i]
-				const { clientX, clientY } = e.nativeEvent.touches[i];
-				this.ctx.globalCompositeOperation = 'destination-out';
-				this.ctx.beginPath();
-				this.ctx.arc(clientX,clientY, r, 0, 2*Math.PI);
-				this.ctx.fill();
-				this.ctx.globalCompositeOperation = 'source-over';
-			}
+			const { clientX, clientY } = e.nativeEvent.touches[0];
+			this.ctx.globalCompositeOperation = 'destination-out';
+			// this.ctx.beginPath();
+			// this.ctx.arc(clientX,clientY, r, 0, 2*Math.PI);
+			// this.ctx.fill();
+			this.ctx.lineTo(clientX,clientY);
+			this.ctx.lineWidth = r;
+			this.ctx.storkeStyle = 'black';
+			this.ctx.lineCap = 'round';
+			this.ctx.lineJoin = 'round';
+			this.ctx.stroke();
+			this.ctx.globalCompositeOperation = 'source-over';
 
 		}
 	}
 
 	handelTouchEnd(e) {
 		this.mistTimeout = setTimeout(this.reRenderMist.bind(this), 1000);
+	}
+
+	handelTouchStart(e) {
+
+		const { clientX, clientY } = e.nativeEvent.touches[0];
+
+		this.ctx.beginPath();
+		this.ctx.moveTo(clientX,clientY);
 	}
 
 	render() {
@@ -134,6 +145,7 @@ export default class Wiper extends Component {
 						ref="myCanvas"
 						onTouchEnd={this.handelTouchEnd.bind(this)}
 						onTouchMove={this.handelTouchMove.bind(this)}
+						onTouchStart={this.handelTouchStart.bind(this)}
 					/>
 				</div> :
 				<div style={css.loading}>Loading</div>
