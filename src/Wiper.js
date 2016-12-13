@@ -78,11 +78,14 @@ export default class Wiper extends Component {
 			const r = 40;
 
 			const { clientX, clientY } = e.nativeEvent.touches[0];
+			const windowScroll = window.pageYOffset;
+			const parentPosition = e.nativeEvent.touches[0].target.offsetParent.offsetTop;
+			const canvasDiff = parentPosition - windowScroll;
 			this.ctx.globalCompositeOperation = 'destination-out';
 			// this.ctx.beginPath();
 			// this.ctx.arc(clientX,clientY, r, 0, 2*Math.PI);
 			// this.ctx.fill();
-			this.ctx.lineTo(clientX,clientY);
+			this.ctx.lineTo(clientX,clientY - canvasDiff);
 			this.ctx.lineWidth = r;
 			this.ctx.storkeStyle = 'black';
 			this.ctx.lineCap = 'round';
@@ -100,9 +103,12 @@ export default class Wiper extends Component {
 	handelTouchStart(e) {
 
 		const { clientX, clientY } = e.nativeEvent.touches[0];
+		const windowScroll = window.pageYOffset;
+		const parentPosition = e.nativeEvent.touches[0].target.offsetParent.offsetTop;
+		const canvasDiff = parentPosition - windowScroll;
 
 		this.ctx.beginPath();
-		this.ctx.moveTo(clientX,clientY);
+		this.ctx.moveTo(clientX,clientY - canvasDiff);
 	}
 
 	render() {
